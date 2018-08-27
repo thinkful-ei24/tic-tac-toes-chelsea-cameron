@@ -8,9 +8,9 @@
 // I can click new game at any time to reset the board
 
 const state = {
-  cells: [null, null, null, null, null, null, null, null, null],
+  cells: Array(9).fill(null),
   clear: function() {
-    this.cells = [null, null, null, null, null, null, null, null, null];
+    this.cells = Array(9).fill(null);
   },
   currentMarker: 'X',
   endOfGame: false
@@ -57,14 +57,15 @@ function determineWinner() {
   ];
 
   for (let i = 0; i < winnerPatterns.length; i++) {
+    const winPattern = winnerPatterns[i]; 
+    if(!state.cells[winPattern[0]]) continue; 
     if (
-      state.cells[winnerPatterns[i][0]] === state.cells[winnerPatterns[i][1]] &&
-      state.cells[winnerPatterns[i][1]] === state.cells[winnerPatterns[i][2]] &&
-      state.cells[winnerPatterns[i][0]] !== null
+      state.cells[winPattern[0]] === state.cells[winPattern[1]] &&
+      state.cells[winPattern[1]] === state.cells[winPattern[2]] 
     ) {
-      $(`#${winnerPatterns[i][0]}`).addClass('win');
-      $(`#${winnerPatterns[i][1]}`).addClass('win');
-      $(`#${winnerPatterns[i][2]}`).addClass('win');
+      $(`#${winPattern[0]}`).addClass('win');
+      $(`#${winPattern[1]}`).addClass('win');
+      $(`#${winPattern[2]}`).addClass('win');
       // disable click on cells after we have a winner
       state.endOfGame = true;
     }
@@ -74,32 +75,26 @@ function determineWinner() {
 // Render functions
 
 function render() {
+
   let htmlArr = [];
   // for loop through state cells length and generate html
   for (let i = 0; i < state.cells.length; i++) {
     let html = '';
     if (i % 3 === 0) {
-      html = `
+      html += `
       <div class="row">
-      <div class="cell" id="${i}">
-      <p>${state.cells[i] ? state.cells[i] : '&nbsp;'}</p>
-      </div>
-      `;
-    } else if (i % 3 === 2) {
-      html = `
-      <div class="cell" id="${i}">
-      <p>${state.cells[i] ? state.cells[i] : '&nbsp;'}</p>
-      </div>
-      </div>
-      `;
-    } else {
-      html = `
-      <div class="cell" id="${i}">
-      <p>${state.cells[i] ? state.cells[i] : '&nbsp;'}</p>
+        `;
+    } 
+    html += `
+    <div class="cell" id="${i}">
+    <p>${state.cells[i] ? state.cells[i] : '&nbsp;'}</p>
+    </div>
+    `;
+    if (i % 3 === 2) {
+      html += `
       </div>
       `;
     }
-
     htmlArr.push(html);
   }
   // push html to DOM .board
