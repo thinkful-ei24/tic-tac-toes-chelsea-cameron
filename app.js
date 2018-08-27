@@ -8,24 +8,27 @@
 // I can click new game at any time to reset the board
 
 const state = {
-  
+  cells: ['', '', '', '', '', '', '', '', ''],
+  clear: function() {
+    this.cells = ['', '', '', '', '', '', '', '', ''];
+  }
 };
 
 // State modification functions
 
 // Render functions
 
+function render() {}
+
 // Event Listeners
 
-function handleStartNewGame(){
-
+function handleStartNewGame() {
+  $('#new-game').click(() => state.clear());
 }
 
-function handleCellClick(){
+function handleCellClick() {}
 
-}
-
-function main(){
+function main() {
   handleCellClick();
   handleStartNewGame();
 }
